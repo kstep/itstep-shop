@@ -10,6 +10,13 @@
     margin: 2%;
     }
 </style>
+
+<form action="{% url 'item_list' %}" method="GET">
+    {{ item_sort_form.as_p }}
+    {{ item_filter_form.as_p }}
+    <input type="submit" value="Сортировать" />
+</form>
+
 {% for item in items %}
 <a href="{% url 'item_detail' pk=item.pk %}"><div class="item">
     <p>Name: {{ item.name }}</p>
