@@ -1,0 +1,28 @@
+{% extends  'base.html' %}
+
+{% block content %}
+<style>
+    .item{
+    background: plum;
+    width: 10%;
+    float: left;
+    padding: 5px;
+    margin: 2%;
+    }
+</style>
+{% for item in items %}
+<a href="{% url 'item_detail' pk=item.pk %}"><div class="item">
+    <p>Name: {{ item.name }}</p>
+    <p>Price: {{ item.price }}</p>
+    <p>Presence:
+        {% if item.count > 0 %}
+        In Stock
+        {% else %}
+        Out of stock
+        {% endif %}</p>
+</div>
+</a>
+{% endfor %}
+
+
+{% endblock %}

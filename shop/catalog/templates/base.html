@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List of Items</title>
+</head>
+<style>
+    a{
+    color: indigo;
+    }
+    a .head{
+    color: white;
+    }
+    .head{
+    text-align: center;
+    font-size: 35px;
+    font-weight: bold;
+    background: BlueViolet;
+    }
+</style>
+<body>
+<a href="{% url 'item_list' %}"><div class="head">Main Title</div></a>
+{% block content %}
+{% endblock %}
+</body>
+</html>

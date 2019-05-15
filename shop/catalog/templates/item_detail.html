@@ -1,0 +1,25 @@
+{% extends  'base.html' %}
+
+{% block content %}
+<style>
+    .item{
+    background: plum;
+    width: 95%;
+    margin: 2%;
+    height: auto;
+    padding: 5px;
+    }
+</style>
+<div class="item">
+    <p>Name: {{ item.name }}</p>
+    <p>Price: {{ item.price }}</p>
+    <p>Presence:
+        {% if item.count > 0 %}
+        In Stock
+        {% else %}
+        Out of stock
+        {% endif %}</p>
+</div>
+
+
+{% endblock %}
