@@ -17,7 +17,11 @@ from django.contrib import admin
 from django.urls import include
 from django.urls import path
 
+from catalog import views as catalog_views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('catalog/', include('catalog.urls'))
+    path('catalog/', include('catalog.urls')),
+    path('cart/', include('cart.urls')),
+    path('', catalog_views.item_list),
 ]
