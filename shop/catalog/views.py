@@ -23,7 +23,7 @@ def item_list(request: HttpRequest):
                       'items': Item.objects
                                    .filter(**filters)
                                    .order_by(
-                                        item_sort_form.cleaned_data['order_by']
+                          (item_sort_form.cleaned_data['order_by'] or 'name')
                                          if item_sort_form.is_valid() else 'name')
                   })
 
