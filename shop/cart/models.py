@@ -20,7 +20,7 @@ class Cart(models.Model):
     @property
     def total_price(self):
         return sum(item.total_price
-                   for item in self.items)
+                   for item in self.items.all())
 
     def __str__(self):
         username = (
