@@ -29,10 +29,6 @@ class ItemPriceFilter(admin.SimpleListFilter):
         return queryset.filter(**filter)
 
 
-class ItemCountFilter(admin.SimpleListFilter):
-    pass
-
-
 @admin.register(models.Item)
 class ItemAdmin(admin.ModelAdmin):
-    list_filter = [ItemPriceFilter, ItemCountFilter]
+    list_filter = [ItemPriceFilter]
