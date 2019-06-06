@@ -31,7 +31,7 @@
     <p>Price: {{ item.price }}</p>
     <p>Presence: {{ item | instock:":-)|:-(" }}</p>
 </a>
-    {% add_to_cart_form_simple item %}
+    {% add_to_cart_form item %}
 </div>
 
 {% endfor %}

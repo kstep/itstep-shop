@@ -2,14 +2,13 @@ from django.conf import settings
 from django.db import models
 
 # Create your models here.
-from catalog.models import ItemAmount
+from catalog.models import ItemAmount, Item
 
 
 class CartItem(ItemAmount):
     cart = models.ForeignKey('Cart',
                              on_delete=models.CASCADE,
                              related_name='items')
-
 
 
 class Cart(models.Model):
@@ -29,3 +28,10 @@ class Cart(models.Model):
         )
         return "Cart #{} for user {}".format(self.id, username)
 
+    def add_item(self, item: Item, amount: int = 1):
+        cart_item = CartItem(
+            cart=self,
+            item=item,
+            amount=amount)
+        cart_item.save()
+        return cart_item
