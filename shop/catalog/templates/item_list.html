@@ -24,7 +24,7 @@
     <input type="submit" value="Сортировать" />
 </form>
 
-{% for item in items %}
+{% for item in object_list %}
 <div class="item">
 <a href="{% url 'item_detail' pk=item.pk %}">
     <p>Name: {{ item.name }}</p>
