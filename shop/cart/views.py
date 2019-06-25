@@ -5,6 +5,10 @@ from cart.forms import AddToCartForm
 # Create your views here.
 from catalog.models import Item
 
+class CartItemRemoveView(View):
+    def get(self, request, id: int):
+        request.cart.items.filter(pk=id).delete()
+        return redirect('cart_view')
 
 class CartView(View):
     def post(self, request):
