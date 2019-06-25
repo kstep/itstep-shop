@@ -87,3 +87,7 @@ class Order(models.Model):
             self.state = 'dropped'
         else:
             raise InvalidOrderStateError(self.state, 'dropped')
+
+
+    def __str__(self):
+        return f'{self.first_name} {self.last_name} ({self.tel})'

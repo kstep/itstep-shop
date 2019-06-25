@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
+{% block content %}
 <ul>
 {% for item in cart.items.all %}
 <li>{{ item }}</li>
@@ -14,5 +9,5 @@
 
 <p>Total price: {{ cart.total_price }}</p>
 
-</body>
-</html>
+<p><a href="{% url 'order_add' %}">Создать заказ</a></p>
+{% endblock %}

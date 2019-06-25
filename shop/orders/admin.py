@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 
 # Register your models here.
 from orders import models
@@ -11,6 +11,7 @@ class OrderItemInline(admin.TabularInline):
 
 @admin.register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
+    list_display = ['__str__', 'created_date', 'state']
     inlines = [OrderItemInline]
     exclude = ['state']
     actions = ['review',
@@ -19,22 +20,30 @@ class OrderAdmin(admin.ModelAdmin):
                'ship',
                'deliver',
                'drop']
+    readonly_fields = ['state']
 
-    def transfer_state(self, newstate, queryset):
+    def transfer_state(self, request, newstate, queryset):
         for order in queryset:
             try:
                 method = getattr(order, newstate)
                 method()
-            except InvalidOrderStateError:
-                pass
+            except InvalidOrderStateError as e:
+                self.message_user(request, str(e),
+                                  messages.WARNING)
             order.save()
 
     def review(self, request, queryset):
-        self.transfer_state('review', queryset)
+        self.transfer_state(request, 'review', queryset)
     def accept(self, request, queryset):
-        self.transfer_state('accept', queryset)
+        self.transfer_state(request, 'accept', queryset)
     def reject(self, request, queryset):
-        self.transfer_state('reject', queryset)
+        self.transfer_state(request, 'reject', queryset)
+    def ship(self, request, queryset):
+        self.transfer_state(request, 'ship', queryset)
+    def deliver(self, request, queryset):
+        self.transfer_state(request, 'deliver', queryset)
+    def drop(self, request, queryset):
+        self.transfer_state(request, 'drop', queryset)
 
 
 
