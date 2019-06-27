@@ -2,7 +2,9 @@ from django.conf import settings
 from django.db import models
 
 # Create your models here.
-from catalog.models import ItemAmount, Item
+from django.db.models import F
+
+from catalog.models import ItemAmount, Item, ItemContainer
 
 
 class CartItem(ItemAmount):
@@ -10,8 +12,11 @@ class CartItem(ItemAmount):
                              on_delete=models.CASCADE,
                              related_name='items')
 
+    class Meta:
+        unique_together = ['cart', 'item']
 
-class Cart(models.Model):
+
+class Cart(models.Model, ItemContainer):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 null=True, default=None,
                                 on_delete=models.CASCADE)
@@ -27,11 +32,3 @@ class Cart(models.Model):
             else '- Unknown -'
         )
         return "Cart #{} for user {}".format(self.id, username)
-
-    def add_item(self, item: Item, amount: int = 1):
-        cart_item = CartItem(
-            cart=self,
-            item=item,
-            amount=amount)
-        cart_item.save()
-        return cart_item

@@ -1,9 +1,10 @@
 from django.db import models
 
 # Create your models here.
+from django.db.models import F
 from django.utils import timezone
 
-from catalog.models import ItemAmount
+from catalog.models import ItemAmount, Item, ItemContainer
 
 
 class InvalidOrderStateError(RuntimeError):
@@ -21,6 +22,9 @@ class OrderItem(ItemAmount):
                               on_delete=models.CASCADE,
                               related_name='items')
 
+    class Meta:
+        unique_together = ['order', 'item']
+
 
 class PaymentType(models.Model):
     name = models.CharField(max_length=200)
@@ -28,7 +32,8 @@ class PaymentType(models.Model):
     def __str__(self):
         return self.name
 
-class Order(models.Model):
+
+class Order(models.Model, ItemContainer):
     created_date = models.DateTimeField(default=timezone.now)
     tel = models.CharField(max_length=50)
     email = models.EmailField(max_length=200)

@@ -1,3 +1,5 @@
+from django.contrib import messages
+from django.contrib.messages import add_message
 from django.shortcuts import render, redirect
 from django import views
 
@@ -25,11 +27,12 @@ class OrderView(views.View):
             order = form.save()  # type: models.Order
 
             for cart_item in cart.items.all():
-                order_item = OrderItem(
-                    order=order,
-                    item=cart_item.item,
-                    amount=cart_item.amount)
-                order_item.save()
+                order.add_item(cart_item.item, cart_item.amount)
+
+            cart.items.all().delete()
+
+            add_message(request, messages.INFO, "Заказ успешно создан")
+
             return redirect("item_list")
         else:
             return self.render_order_add_page(request, form)

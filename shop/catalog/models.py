@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+from django.db.models import F
 
 
 class Item(models.Model):
@@ -10,6 +11,20 @@ class Item(models.Model):
 
     def __str__(self):
         return "Item #{} {}, price {}".format(self.pk, self.name, self.price)
+
+
+class ItemContainer:
+    def add_item(self, item: Item, amount: int = 1):
+        if self.items.filter(item=item)\
+                .update(amount=F('amount') + amount) == 0:
+            # c_item = CItem(...
+            container = self.__class__.__name__.lower()
+            c_item = self.items.model(
+                item=item,
+                amount=amount,
+                **{container: self})
+            c_item.save()
+
 
 class ItemAmount(models.Model):
     class Meta:
