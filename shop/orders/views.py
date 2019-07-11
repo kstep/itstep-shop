@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.messages import add_message
+from django.core.mail import mail_admins, send_mail, EmailMessage
 from django.shortcuts import render, redirect
 from django import views
 
@@ -30,6 +31,18 @@ class OrderView(views.View):
                 order.add_item(cart_item.item, cart_item.amount)
 
             cart.items.all().delete()
+
+            message = EmailMessage(
+                from_email='robot@shop.com',
+                subject='Получен новый заказ',
+                cc=[order.email],
+                to=['admin@shop.com', 'manager@shop.com'],
+                body=f'Получен новый заказ: id={order.pk}, от {order.email}',
+                attachments=[
+                    ('order.txt', f'Заказ {order.pk} ...', 'text/plain')
+                ]
+            )
+            message.send()
 
             add_message(request, messages.INFO, "Заказ успешно создан")
 
